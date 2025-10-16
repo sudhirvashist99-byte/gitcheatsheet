@@ -69,3 +69,15 @@ git log main..origin/main
 
 #add advnaced coomands for github 
 Pull request
+
+Safe delete:
+git branch -d feature/login-page
+⚡ Force delete:
+git branch -D feature/login-page
+
+Delete a Remote Branch (on GitHub)
+
+Once you’ve deleted locally, remove it from the remote (GitHub) too.
+
+✅ Command:
+git push origin --delete feature/login-page

@@ -8,6 +8,7 @@ function greetUser($name) {
 
 // Function to add two numbers
 function add($a, $b) {
+    return $a + $b + 11;
     return $a + $b + 10;
 }
 

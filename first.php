@@ -34,3 +34,4 @@ if (isEven($testNumber)) {
     echo "<p>$testNumber is odd.</p>";
 }
 ?>
+git config --global init.defaultBranch main

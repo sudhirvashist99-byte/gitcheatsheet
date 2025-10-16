@@ -1,38 +1,58 @@
-<?php
-// Sample PHP script for testing
+# Git repository बनाना
+git init                  # नई repo बनाएं
+git clone <url>           # GitHub/GitLab से clone करें
 
-// Function to greet a user
-function greetUser($name) {
-    return "Hello, " . htmlspecialchars($name) . "!";
-}
+# Changes track करना
+git status                # Current status देखें
+git add <file>            # Single file stage करें
+git add .                 # सभी files stage करें
+git commit -m "message"   # Stage files commit करें
+git log                   # Commit history देखें
+git diff                  # Unstaged changes देखें
 
-// Function to add two numbers
-function add($a, $b) {
-    return $a + $b + 11;
-    return $a + $b + 10;
-}
+# Branches
+git branch                # सभी branches देखें
+git branch <branch-name>  # नई branch बनाएं
+git checkout <branch>     # किसी branch पर switch करें
+git checkout -b <branch>  # नई branch बनाकर switch करें
 
-// Function to check if a number is even
-function isEven($number) {
-    return $number % 2 === 0;
-}
+# Merge & Delete
+git merge <branch>        # किसी branch को merge करें
+git branch -d <branch>    # Branch delete करें
 
-// Testing the functions
-$name = "John";
-$num1 = 10;
-$num2 = 15;
+# Branch history visualize
+git log --oneline --graph --all
 
-echo "<h2>PHP Function Testing</h2>";
+💡 Tip:
 
-echo "<p>" . greetUser($name) . "</p>";
+नई branch current commit से शुरू होती है।
 
-echo "<p>Sum of $num1 and $num2 is: " . add($num1, $num2) . "</p>";
+Merge conflicts आए तो resolve करना पड़ता है।
 
-$testNumber = 7;
-if (isEven($testNumber)) {
-    echo "<p>$testNumber is even.</p>";
-} else {
-    echo "<p>$testNumber is odd.</p>";
-}
-?>
+
+
+pull = fetch + merge
+
+push = local changes को remote में भेजना
+
 git config --global init.defaultBranch main
+
+# Undo & revert
+git reset --soft HEAD~1       # Last commit undo, changes रखो
+git reset --hard HEAD~1       # Last commit और changes delete
+git revert <commit>           # किसी commit को उलटना
+
+# Temporary save
+git stash                     # Current changes save
+git stash pop                 # Stash recover
+
+# Pick & rebase
+git cherry-pick <commit>      # किसी commit को दूसरी branch में apply
+git rebase <branch>           # Branch को base commit के ऊपर ले जाएँ
+
+# Tags & visual
+git tag <tagname>             # Release/version mark
+git log --graph --decorate --all
+
+git remote -v
+

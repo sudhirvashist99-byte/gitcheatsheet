@@ -57,3 +57,4 @@ git log --graph --decorate --all
 git remote -v
 mkdir newapp && cd newapp && touch index.html && git init
 
+#add advnaced coomands for github

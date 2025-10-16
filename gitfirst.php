@@ -67,4 +67,5 @@ git log origin/main..main
 Shows commits behind (remote commits not yet pulled).
 git log main..origin/main
 
-#add advnaced coomands for github
+#add advnaced coomands for github 
+Pull request

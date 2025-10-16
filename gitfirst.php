@@ -57,3 +57,13 @@ git log --graph --decorate --all
 git remote -v
 mkdir newapp && cd newapp && touch index.html && git init
 
+git fetch origin
+git status
+
+👉 Shows commits that are ahead (local commits not pushed).
+git log origin/main..main
+
+
+Shows commits behind (remote commits not yet pulled).
+git log main..origin/main
+

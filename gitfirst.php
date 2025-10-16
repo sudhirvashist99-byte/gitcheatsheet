@@ -55,4 +55,5 @@ git tag <tagname>             # Release/version mark
 git log --graph --decorate --all
 
 git remote -v
+mkdir newapp && cd newapp && touch index.html && git init
 

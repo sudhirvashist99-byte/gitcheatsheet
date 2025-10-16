@@ -8,7 +8,7 @@ function greetUser($name) {
 
 // Function to add two numbers
 function add($a, $b) {
-    return $a + $b;
+    return $a + $b + 9;
 }
 
 // Function to check if a number is even

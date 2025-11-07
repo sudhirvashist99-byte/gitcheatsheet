@@ -31,6 +31,53 @@ npm install
 npm start
 
 
+# =======================
+# Stage 1 — Build stage
+# =======================
+FROM python:3.10-slim AS builder
+
+# Install build dependencies (only needed for building wheels)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install dependencies into a wheels directory
+COPY requirements.txt .
+RUN pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
 
 
 
+# =======================
+# Stage 2 — Final runtime image
+# =======================
+FROM python:3.10-slim AS runtime
+
+# Install only runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy wheels from builder
+COPY --from=builder /wheels /wheels
+RUN pip install --no-cache /wheels/*
+
+# Copy project code
+COPY . .
+
+EXPOSE 8001
+
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8001"]
+
+version: '3.9'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8001:8001"

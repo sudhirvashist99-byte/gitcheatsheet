@@ -15,4 +15,22 @@ Step 3 — Backend run
 python manage.py migrate
 python manage.py runserver 0.0.0.0:8000
 
+step 4 create requirements.txt
+pip freeze > requirements.txt
+
+
 for React
+docker run -it --rm \
+  -p 3000:3000 \
+  -v "$PWD/frontend":/app \
+  -w /app \
+  node:16 bash
+
+npm install
+
+npm start
+
+
+
+
+

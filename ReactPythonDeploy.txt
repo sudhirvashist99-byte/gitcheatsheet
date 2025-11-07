@@ -1,1 +1,18 @@
-React & Python Project
+To Run React & Python Project in docker
+
+For Python
+Step 1 — Python container open
+docker run -it --rm \
+  -p 8000:8000 \
+  -v "$PWD/react_django_demo_app":/app \
+  -w /app \
+  python:3.10 bash
+
+Step 2 — Django dependencies install
+pip install django djangorestframework django-cors-headers
+
+Step 3 — Backend run
+python manage.py migrate
+python manage.py runserver 0.0.0.0:8000
+
+for React

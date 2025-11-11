@@ -8,14 +8,15 @@ docker run -it --rm \
   -w /app \
   python:3.10 bash
 
-Step 2 — Django dependencies install
+Step 2 — Django dependencies install (if requirements.txt file exists pip install -r requirements.txt)
 pip install django djangorestframework django-cors-headers
 
 Step 3 — Backend run
 python manage.py migrate
 python manage.py runserver 0.0.0.0:8000
 
-step 4 create requirements.txt
+Step 4 add host in settings.py if aplicable
+step 5 create requirements.txt
 pip freeze > requirements.txt
 
 

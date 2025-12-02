@@ -13,6 +13,7 @@ data:
   DB_USER: $(echo $SECRET | jq -r '.DB_USER' | base64 -w 0)
   DB_PASSWORD: $(echo $SECRET | jq -r '.DB_PASSWORD' | base64 -w 0)
   DB_NAME: $(echo $SECRET | jq -r '.DB_NAME' | base64 -w 0)
+  
 EOF
 
 kubectl apply -f mysql-secret.yaml

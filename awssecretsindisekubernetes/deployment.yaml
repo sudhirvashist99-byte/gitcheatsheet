@@ -1,41 +1,71 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: php-app
+  name: php-aws-rds-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: php-app
+      app: php-aws-rds-app
   template:
     metadata:
       labels:
-        app: php-app
+        app: php-aws-rds-app
     spec:
       containers:
-        - name: php
-          image: yourdocker/image
-          env:
-            - name: DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: DB_HOST
-
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: DB_USER
-
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: DB_PASSWORD
-
-            - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: DB_NAME
+      - name: php-aws-rds-app
+        image: sudhirvashist99/php-aws-rds-app:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-aws-rds-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php-aws-rds-app
+  template:
+    metadata:
+      labels:
+        app: php-aws-rds-app
+    spec:
+      containers:
+      - name: php-aws-rds-app
+        image: sudhirvashist99/php-aws-rds-app:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: DB_HOST
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: DB_PASSWORD
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: DB_NAME
+        - name: Master_Admin
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: Master_Admin
+        - name: Master_Admin_Password
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: Master_Admin_Password      
+        

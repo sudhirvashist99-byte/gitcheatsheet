@@ -1,0 +1,49 @@
+docker run -d --name sonarqube \
+  -p 9000:9000 \
+  sonarqube:latest
+
+http://YOUR-EC2-IP:9000
+Login into Sonarqube Admin/Admin
+
+Generate Token
+
+✅ STEP 1 — Add Token & Project Variables in GitLab
+
+Go to:
+
+GitLab → Your Project → Settings → CI/CD → Variables
+
+Add the following variables:
+
+Variable Name	Value
+SONAR_TOKEN	your generated token
+SONAR_HOST_URL	Example: http://your-ec2-sonarqube:9000
+SONAR_PROJECT_KEY	e.g., php-mysql-app
+SONAR_PROJECT_NAME	e.g., php-mysql-app
+
+Set Protected = OFF, Masked = ON.
+
+✅ STEP 2 — Add sonar-project.properties file
+
+Create this file at your project root:
+
+sonar.projectKey=${SONAR_PROJECT_KEY}
+sonar.projectName=${SONAR_PROJECT_NAME}
+sonar.sources=src
+sonar.php.coverage.reportPaths=coverage.xml
+sonar.host.url=${SONAR_HOST_URL}
+
+Add Code to Gitlab pipeline
+
+sonarqube_scan:
+  stage: sonar
+  image: sonarsource/sonar-scanner-cli:latest
+  script:
+    - |
+      sonar-scanner \
+      -Dsonar.login=$SONAR_TOKEN \
+      -Dsonar.host.url=$SONAR_HOST_URL \
+      -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+      -Dsonar.projectName=$SONAR_PROJECT_NAME
+  only:
+    - main

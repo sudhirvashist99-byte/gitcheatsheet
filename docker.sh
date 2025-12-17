@@ -18,3 +18,27 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo systemctl start docker
 # change group permission
 sudo usermod -aG docker $USER && newgrp docker
+# install sonarqube
+docker run -d --name sonarqube \
+  -p 9000:9000 \
+  sonarqube:latest
+#install k3s  
+curl -sfL https://get.k3s.io | sudo sh -
+echo 'alias kubectl="sudo k3s kubectl"' >> ~/.bashrc
+source ~/.bashrc
+curl -fsSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+sudo su
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+#install argocd by helm
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update  
+kubectl create namespace argocd
+#helm install argocd argo/argo-cd -n argocd
+helm install argocd argo/argo-cd \
+  -n argocd \
+  --create-namespace \
+  --set server.service.type=NodePort \
+  --set server.service.nodePortHttp=32109
+#kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo

@@ -47,3 +47,16 @@ metadata:
     argocd-image-updater.argoproj.io/php-fpm.write-back-method: git
     argocd-image-updater.argoproj.io/php-fpm.git-branch: main
 
+# ---------------- SONARQUBE SCAN ----------------
+sonarqube_scan:
+  stage: sonar
+  image: sonarsource/sonar-scanner-cli:latest
+  script:
+    - |
+      sonar-scanner \
+        -Dsonar.host.url=$SONAR_HOST_URL \
+        -Dsonar.login=$SONAR_TOKEN \
+        -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+        -Dsonar.projectName=$SONAR_PROJECT_NAME
+  only:
+    - main

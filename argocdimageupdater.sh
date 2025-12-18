@@ -15,6 +15,18 @@ data:
   git.commit-message-template: |
     chore: update image {{.Image}} to {{.NewTag}}
 
+  registries.conf: |
+    registries:
+    - name: DockerHub
+      api_url: https://registry-1.docker.io
+      prefix: sudhirvashist99
+      credentials: secret:dockerhub-credentials
+
+  git.credentials: |
+    https://gitlab.com:
+      username: sudhirvashist99-byte
+      password: glpat-7ZAkx9gKsVLgEfxHVBQ19W86MQp1OmpiM3FxCw.01.121re1is
+
 kubectl rollout restart deployment argocd-image-updater-controller \
   -n argocd-image-updater-system
 #finde status of update
@@ -31,6 +43,7 @@ kubectl edit application myappargocd -n argocd
 metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: php-fpm=sudhirvashist99/php-fpm-app
-    argocd-image-updater.argoproj.io/app.update-strategy: latest
-    argocd-image-updater.argoproj.io/app.write-back-method: git
-    argocd-image-updater.argoproj.io/app.git-branch: main
+    argocd-image-updater.argoproj.io/php-fpm.update-strategy: latest
+    argocd-image-updater.argoproj.io/php-fpm.write-back-method: git
+    argocd-image-updater.argoproj.io/php-fpm.git-branch: main
+

@@ -1,17 +1,27 @@
 #argocd image updater
-kubectl apply -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/config/install.yaml 
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/config/install.yaml
+ 
 
 kubectl create secret generic gitlab-credentials \
-  -n argocd-image-updater-system \
-  --from-literal=username=sudhirvashist99-byte\  (gitlab access token) 
-  --from-literal=password=glpat-7ZAkx9gKsVLgEfxHVBQ19W86MQp1OmpiM3FxCw.01.121re1is (gitlab access token)
+  -n argocd \
+  --from-literal=username=sudhirvashist99-byte\
+  --from-literal=password=glpat-Klp3rtwJw4g2k3nCdmAXe286MQp1OmprNHhsCw.01.120foufum (gitlab access token)glpat-Klp3rtwJw4g2k3nCdmAXe286MQp1OmprNHhsCw.01.120foufum
+
+  kubectl create secret generic gitlab-credentials \
+  -n argocd \
+  --from-literal=username=sudhirvashist99-byte\
+  --from-literal=password=glpat-Klp3rtwJw4g2k3nCdmAXe286MQp1OmprNHhsCw.01.120foufum
+
+kubectl get secret gitlab-credentials -n argocd
 
 #Configure Image Updater to use Git 
-kubectl edit configmap argocd-image-updater-config \
-  -n argocd-image-updater-system
+kubectl edit configmap argocd-image-updater-config -n argocd
+
 #Add data on before other data
+
 data:
   git.write-back-method: git
+
   git.commit-message-template: |
     chore: update image {{.Image}} to {{.NewTag}}
 
@@ -24,28 +34,26 @@ data:
 
   git.credentials: |
     https://gitlab.com:
-      username: sudhirvashist99-byte
-      password: glpat-7ZAkx9gKsVLgEfxHVBQ19W86MQp1OmpiM3FxCw.01.121re1is
-
-kubectl rollout restart deployment argocd-image-updater-controller \
-  -n argocd-image-updater-system
-#finde status of update
-kubectl get configmap argocd-image-updater-config \
-  -n argocd-image-updater-system -o yaml
+      usernameSecret:
+        name: gitlab-credentials
+        key: username
+      passwordSecret:
+        name: gitlab-credentials
+        key: password
 
 
-
-#find applacition name
+kubectl rollout restart deployment argocd-image-updater-controller -n argocd
+#find application name
 kubectl get applications -n argocd
-
-kubectl edit application myappargocd -n argocd
+kubectl edit application sudd -n argocd
 #Add Image Updater annotations 
 metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: php-fpm=sudhirvashist99/php-fpm-app
     argocd-image-updater.argoproj.io/php-fpm.update-strategy: latest
-    argocd-image-updater.argoproj.io/php-fpm.write-back-method: git
-    argocd-image-updater.argoproj.io/php-fpm.git-branch: main
+    argocd-image-updater.argoproj.io/write-back-method: git
+
+kubectl describe application sudd -n argocd | grep image-updater
 
 # ---------------- SONARQUBE SCAN ----------------
 sonarqube_scan:

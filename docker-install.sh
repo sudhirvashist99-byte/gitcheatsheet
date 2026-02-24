@@ -30,4 +30,5 @@ sudo apt update -y
 echo "Done! You can now install Docker using:"
 echo "  sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo usermod -aG docker $USER && newgrp docker
 echo "Done! installation of Docker Completed"

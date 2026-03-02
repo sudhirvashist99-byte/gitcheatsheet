@@ -1,0 +1,15 @@
+#Uplaod certificate.pfx file to cd /etc/ssl/letsencrypt
+
+cd /etc/ssl/letsencrypt
+ls
+
+# Create file using password of certificate.pfx file like "aquDS2"
+
+openssl pkcs12 -in certificate.pfx -clcerts -nokeys -out certificate.crt
+openssl pkcs12 -in certificate.pfx -nocerts -nodes -out domain.key
+openssl pkcs12 -in certificate.pfx -cacerts -nokeys -out fullchain.crt
+
+
+# Apply certificates
+systemctl status httpd
+systemctl restart httpd
